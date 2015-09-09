@@ -58,7 +58,7 @@ var LoadAssets = function(listAssets, callbackLoad, assetsRoot){
         }
       }
     }else {
-      console.log("The first parameter of the constructor must be a list of objects");
+      console.error("The first parameter of the constructor must be a list of objects");
     }
   };
 
