@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LoadAssets</title>
+  <script src="assets/js/LoadAssets.js" type="text/javascript" charset="utf-8"></script>
+  <script type="text/javascript">
+    //LoadAssets Object
+    var loadAssets = new LoadAssets([{
+      type: 'style',
+      filename: 'assets/css/style.css'
+    },{
+      type: 'js',
+      filename: 'assets/js/test.js'
+    },{
+      type: 'image',
+      filename: 'assets/images/javascript.png'
+    }], function(){
+      console.log('Count: '+loadAssets.count);
+    });
+  </script>
+</head>
+<body onload="loadAssets.startLoad()">
+  
+</body>
+</html>
