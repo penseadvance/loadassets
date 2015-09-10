@@ -1,3 +1,5 @@
 (function test(){
-  document.querySelector('body').innerHTML = '<h1>Script loaded</h1>';
+  var h1 = document.createElement("h1");
+  h1.innerHTML = 'Script loaded';
+  document.querySelector('body').appendChild(h1);
 })();

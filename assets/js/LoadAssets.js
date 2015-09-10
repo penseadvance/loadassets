@@ -2,13 +2,16 @@
  * Class for loading assets
  * @param {Object[]}  listAssets    List of objects with parameters for each file
  * @param {function}  callbackLoad  Callback for each asset loaded
- * @param {string}    assetsRoot    Callback for each asset loaded
+ * @param {string}    assetsRoot    Relative or absolute path from the root of assets
  */
 var LoadAssets = function(listAssets, callbackLoad, assetsRoot){
   
   var self = this;
   var baseUrl = (assetsRoot !== undefined ? assetsRoot+'/' : assetsRoot) || '';
+  var orderedList = [];
+  var unorderedList = [];
   self.count = 0;
+
   
   /**
    * Load data from the server using a HTTP GET request.
@@ -35,26 +38,73 @@ var LoadAssets = function(listAssets, callbackLoad, assetsRoot){
   self.validateObject = function(obj){
     return (typeof obj === "object" && Object.keys(obj).indexOf('type') !== -1 && Object.keys(obj).indexOf('filename') !== -1 ? true : false);
   };
+
+  /**
+   * Injects the elements loaded in the DOM
+   * @param  {Object[]}  allElements  Loaded elements
+   * @param  {function}  callback     A callback function that is executed if the process succeeds.
+   */
+  var injectElements = function(allElements, callback){
+    for(var el in allElements){
+      if(allElements[el].type == 'js' || allElements[el].type == 'style'){
+        document.querySelector('head').appendChild(allElements[el].element);
+      }
+    }
+    if(typeof callback === 'function') callback();
+  };
+
+  /**
+   * Sorts the elements loaded
+   * @param  {object}  object  Loaded elements
+   */
+  var putInOrder = function(object, callback){
+    if(typeof object.order !== 'undefined' && typeof object.order == 'number'){
+      orderedList.push(object);
+    }else {
+      unorderedList.push(object);
+    }
+    if(orderedList.concat(unorderedList).length == listAssets.length){
+      orderedList.sort(function(a, b){
+        return a.order - b.order;
+      });
+      if(typeof callback === 'function') callback(orderedList.concat(unorderedList));
+    }
+  };
   
   /**
    * Starts loading the files
    */
   self.startLoad = function(){
+
     if(typeof listAssets === "object" && listAssets.length){
-      for(item in listAssets){
+      for(var item in listAssets){
         var currentItem = listAssets[item];
         if(self.validateObject(currentItem)){
           switch(currentItem.type){
             case 'image':
-              self.loadImage(baseUrl+currentItem.filename);
+              self.loadImage(currentItem, function(object){
+                putInOrder(object, function(allElements){
+                  injectElements(allElements);
+                });
+              });
               break;
             case 'js':
-              self.loadScript(baseUrl+currentItem.filename);
+              self.loadScript(currentItem, function(object){
+                putInOrder(object, function(allElements){
+                  injectElements(allElements);
+                });
+              });
               break;
             case 'style':
-              self.loadCss(baseUrl+currentItem.filename);
+              self.loadCss(currentItem, function(object){
+                putInOrder(object, function(allElements){
+                  injectElements(allElements);
+                });
+              });
               break;
           }
+        }else {
+          console.info("The "+currentItem.filename+" item need have the filename field and type");
         }
       }
     }else {
@@ -64,50 +114,54 @@ var LoadAssets = function(listAssets, callbackLoad, assetsRoot){
 
   /**
    * Loads and inserts the contents of a script in the DOM
-   * @param  {string}    url       A string containing the URL to which the request is sent.
-   * @param  {function}  callback  A callback function that is executed if the request succeeds.
+   * @param  {object}    object    Object configured for asset loading
+   * @param  {function}  callback  A callback function that is executed if the request succeeds
    */
-  self.loadScript = function(url, callback){
-    self.get(url, function(content){
+  self.loadScript = function(object, callback){
+    self.get(baseUrl+object.filename, function(content){
       var newScript = document.createElement('script');
       newScript.type = 'text/javascript';
       newScript.innerHTML = content;
-      document.querySelector('head').appendChild(newScript);
+      object.element = newScript;
+
       self.count++;
-      if(typeof callbackLoad == 'function') callbackLoad();
-      if(typeof callback == 'function') callback(newStyle);
+      if(typeof callbackLoad == 'function') callbackLoad(object);
+      if(typeof callback == 'function') callback(object);
     });
   };
 
   /**
    * Loads a image
-   * @param  {string}    url       A string containing the URL to which the request is sent.
-   * @param  {function}  callback  A callback function that is executed if the request succeeds.
+   * @param  {object}    object    Object configured for asset loading
+   * @param  {function}  callback  A callback function that is executed if the request succeeds
    */
-  self.loadImage = function(url, callback){
+  self.loadImage = function(object, callback){
     var newImage = new Image();
     newImage.onload = function(){
+      object.element = newImage;
+
       self.count++;
-      if(typeof callbackLoad == 'function') callbackLoad();
-      if(typeof callback == 'function') callback(newImage);
+      if(typeof callbackLoad == 'function') callbackLoad(object);
+      if(typeof callback == 'function') callback(object);
     };
-    newImage.src = url;
+    newImage.src = baseUrl+object.filename;
   };
 
   /**
    * Loads and inserts the contents of a style in the DOM
-   * @param  {string}    url       A string containing the URL to which the request is sent.
-   * @param  {function}  callback  A callback function that is executed if the request succeeds.
+   * @param  {object}    object    Object configured for asset loading
+   * @param  {function}  callback  A callback function that is executed if the request succeeds
    */
-  self.loadCss = function(url, callback){
-    self.get(url, function(content){
+  self.loadCss = function(object, callback){
+    self.get(baseUrl+object.filename, function(content){
       var newStyle = document.createElement('style');
       newStyle.type = "text/css";
       newStyle.innerHTML = content;
-      document.querySelector('head').appendChild(newStyle);
+      object.element = newStyle;
+
       self.count++;
-      if(typeof callbackLoad == 'function') callbackLoad();
-      if(typeof callback == 'function') callback(newStyle);
+      if(typeof callbackLoad == 'function') callbackLoad(object);
+      if(typeof callback == 'function') callback(object);
     });
   };
   
