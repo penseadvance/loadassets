@@ -8,19 +8,20 @@
     //LoadAssets Object
     var loadAssets = new LoadAssets([{
       type: 'style',
-      filename: 'assets/css/style.css'
+      filename: 'assets/css/style.css',
+      order: 1
     },{
       type: 'js',
-      filename: 'assets/js/test.js'
+      filename: 'assets/js/test.js',
+      order: 2
     },{
       type: 'image',
       filename: 'assets/images/javascript.png'
-    }], function(){
-      console.log('Count: '+loadAssets.count);
+    }], function(object){
+      console.info('Count: '+loadAssets.count, object);
     });
   </script>
 </head>
 <body onload="loadAssets.startLoad()">
-  
 </body>
 </html>
