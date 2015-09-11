@@ -49,9 +49,8 @@ var LoadAssets = function(listAssets, callbackLoad, assetsRoot){
       if(allElements[el].type == 'js' || allElements[el].type == 'style'){
         document.querySelector('head').appendChild(allElements[el].element);
       }
-      if(typeof callbackLoad == 'function') callbackLoad(allElements[el]);
     }
-    if(typeof callback === 'function') callback();
+    if(typeof callback === 'function') callback(object);
   };
 
   /**
@@ -85,21 +84,27 @@ var LoadAssets = function(listAssets, callbackLoad, assetsRoot){
             case 'image':
               self.loadImage(currentItem, function(object){
                 putInOrder(object, function(allElements){
-                  injectElements(allElements);
+                  injectElements(allElements, function(object){
+                    if(typeof callbackLoad == 'function') callbackLoad(object);
+                  });
                 });
               });
               break;
             case 'js':
               self.loadScript(currentItem, function(object){
                 putInOrder(object, function(allElements){
-                  injectElements(allElements);
+                  injectElements(allElements, function(object){
+                    if(typeof callbackLoad == 'function') callbackLoad(object);
+                  });
                 });
               });
               break;
             case 'style':
               self.loadCss(currentItem, function(object){
                 putInOrder(object, function(allElements){
-                  injectElements(allElements);
+                  injectElements(allElements, function(object){
+                    if(typeof callbackLoad == 'function') callbackLoad(object);
+                  });
                 });
               });
               break;
