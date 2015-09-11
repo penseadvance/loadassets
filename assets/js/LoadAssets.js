@@ -49,6 +49,7 @@ var LoadAssets = function(listAssets, callbackLoad, assetsRoot){
       if(allElements[el].type == 'js' || allElements[el].type == 'style'){
         document.querySelector('head').appendChild(allElements[el].element);
       }
+      if(typeof callbackLoad == 'function') callbackLoad(allElements[el]);
     }
     if(typeof callback === 'function') callback();
   };
@@ -125,7 +126,6 @@ var LoadAssets = function(listAssets, callbackLoad, assetsRoot){
       object.element = newScript;
 
       self.count++;
-      if(typeof callbackLoad == 'function') callbackLoad(object);
       if(typeof callback == 'function') callback(object);
     });
   };
@@ -141,7 +141,6 @@ var LoadAssets = function(listAssets, callbackLoad, assetsRoot){
       object.element = newImage;
 
       self.count++;
-      if(typeof callbackLoad == 'function') callbackLoad(object);
       if(typeof callback == 'function') callback(object);
     };
     newImage.src = baseUrl+object.filename;
@@ -160,7 +159,6 @@ var LoadAssets = function(listAssets, callbackLoad, assetsRoot){
       object.element = newStyle;
 
       self.count++;
-      if(typeof callbackLoad == 'function') callbackLoad(object);
       if(typeof callback == 'function') callback(object);
     });
   };
