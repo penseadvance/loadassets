@@ -3,22 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <title>LoadAssets</title>
-  <script src="assets/js/LoadAssets.js" type="text/javascript" charset="utf-8"></script>
+  <script src="dist/LoadAssets.js" type="text/javascript" charset="utf-8"></script>
   <script type="text/javascript">
     //LoadAssets Object
     var loadAssets = new LoadAssets([{
       type: 'style',
-      filename: 'assets/css/style.css',
+      filename: 'test/assets/css/style.css',
       order: 1
     },{
       type: 'js',
-      filename: 'assets/js/test.js',
+      filename: 'test/assets/js/test.js',
       order: 2
     },{
       type: 'image',
-      filename: 'assets/images/javascript.png'
+      filename: 'test/assets/images/javascript.png'
     }], function(object){
       console.info('Count: '+loadAssets.count, object);
+      // This is already cached
+      document.body.insertAdjacentHTML('beforeend', '<img src="test/assets/images/javascript.png">')
     });
   </script>
 </head>
