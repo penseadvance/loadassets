@@ -4,7 +4,7 @@
  * @param {function}  callbackLoad  Callback for each asset loaded
  * @param {string}    assetsRoot    Relative or absolute path from the root of assets
  */
-var LoadAssets = function(listAssets, callbackLoad, assetsRoot){
+module.exports = function(listAssets, callbackLoad, assetsRoot){
 
   var self = this;
   var baseUrl = (assetsRoot !== undefined ? assetsRoot+'/' : assetsRoot) || '';
@@ -232,6 +232,4 @@ var LoadAssets = function(listAssets, callbackLoad, assetsRoot){
       if(typeof callback == 'function') callback(object);
     });
   };
-
-
 };

@@ -24,6 +24,20 @@ module.exports = function(grunt) {
         }
       }
     },
+    
+    // Bundle all the js modules into one universal file
+    browserify: {
+      dist: {
+        files: {
+          '<%= dirs.dist %>/LoadAssets.js': ['src/LoadAssets.js']
+        },
+        options: {
+          browserifyOptions: {
+            standalone: 'LoadAssets'
+          }
+        }
+      }
+    },
 
     // Minify your javascripts
     uglify: {
@@ -32,7 +46,7 @@ module.exports = function(grunt) {
       },
       target: {
         files: {
-          '<%= dirs.dist %>/LoadAssets.js': ['src/LoadAssets.js']
+          '<%= dirs.dist %>/LoadAssets.js': ['<%= dirs.dist %>/LoadAssets.js']
         }
       }
     },
@@ -65,12 +79,13 @@ module.exports = function(grunt) {
 
   // Load grunt plugins
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-browser-sync');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-documentation');
 
   // Register the tasks
-  grunt.registerTask('default', ['uglify', 'browserSync', 'watch']);
-  grunt.registerTask('build', ['uglify', 'documentation']);
+  grunt.registerTask('default', ['browserify', 'uglify', 'browserSync', 'watch']);
+  grunt.registerTask('build', ['browserify','uglify', 'documentation']);
 
 }

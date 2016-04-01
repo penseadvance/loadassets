@@ -1,6 +1,6 @@
 {
   "name": "loadassets",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "A library to load assets dinamically.",
   "main": "src/LoadAssets.js",
   "directories": {
@@ -26,6 +26,7 @@
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-browser-sync": "^2.2.0",
+    "grunt-browserify": "^5.0.0",
     "grunt-contrib-uglify": "^1.0.1",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-documentation": "^1.1.2"

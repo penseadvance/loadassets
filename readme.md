@@ -7,14 +7,15 @@ The supported assets are:
   - CSS
   - JavaScript
 
-**It's less than 2Kb minified and les than 1Kb Gziped.**
+**It's less than 4Kb minified and less than 1Kb Gziped.**
 
 ## SVG
 The library loads and injects SVG files inline with support for fallback to a png file in case the browser doesn't support SVG. To use it, you've got to pass the argument `hasFallback: true`.
 
-You can also load a SVG as an image, using the `<img>` tag, is you pass the SVG with the type image, instead of SVG. Note that this won't check for SVG support and won't provide any fallback.
+You can also load a SVG as an image, using the `<img>` tag, just pass the SVG with the type image, instead of SVG. Note that this won't check for SVG support and won't provide any fallback.
 
 ## How to use it
+Add the script to your page or use browserify and require it. We recomend using npm as your packge manager and browserify as your module loader.
 
     //LoadAssets Object
     var loadAssets = new LoadAssets([{
@@ -39,6 +40,9 @@ You can also load a SVG as an image, using the `<img>` tag, is you pass the SVG 
       document.querySelector('.javascript')
               .insertAdjacentHTML('beforeend', '<img src="test/assets/images/javascript.png">')
     });
+    
+    // Inject the assets
+    loadAssets.startLoad();
 
 ## License
 LoadAssets is licensed under the MIT license. (http://opensource.org/licenses/MIT)
