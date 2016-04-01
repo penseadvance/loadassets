@@ -184,7 +184,7 @@ var LoadAssets = function(listAssets, callbackLoad, assetsRoot){
   self.loadSVG = function(object, callback) {
     var target = document.querySelectorAll(object.target);
 
-    if(!self.isSvgAble() === true) {
+    if(self.isSvgAble() === true) {
       self.get(baseUrl + object.filename + '.svg', function(content) {
         var i = 0;
         while(i < target.length) {
@@ -197,24 +197,20 @@ var LoadAssets = function(listAssets, callbackLoad, assetsRoot){
       });
 
     } else {
-        
       if(object.hasFallback) {
-        
         self.loadImage({
           type: 'image',
-          filename: baseUrl + object.filename + '.png',
-          callback: function() {
-              console.log('dfjhdsfh')
-            var i = 0;
-            while(i < target.length) {
-              target[i].insertAdjacentHTML('beforeend', baseUrl + object.filename + '.png')
-              i++;
-            }
-
-            self.count++;
-            if(typeof callback == 'function') callback(object);
+          filename: baseUrl + object.filename + '.png'
+        }, function(){
+          console.log('dfjhdsfh')
+          var i = 0;
+          while(i < target.length) {
+            target[i].insertAdjacentHTML('beforeend', '<img src="'+ baseUrl + object.filename + '.png">');
+            i++;
           }
-        })
+          self.count++;
+          if(typeof callback == 'function') callback(object);
+        });
       }
     }
 
