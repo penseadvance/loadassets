@@ -4,3 +4,19 @@ body {
 
   font-family: 'Helvetica', Arial, sans-serif;
 }
+
+img,
+svg {
+  float: left;
+  margin-right: 32px;
+}
+
+img {
+  width: 300px;
+  height: auto;
+}
+
+svg {
+  width: 300px;
+  height: 300px;
+}

@@ -15,15 +15,31 @@
       filename: 'test/assets/js/test.js',
       order: 2
     },{
+      type: 'svg',
+      filename: 'test/assets/images/advance',
+      target: '.advance',
+      hasFallback: true
+    },{
+      type: 'image',
+      filename: 'test/assets/images/advance.svg'
+    },{
       type: 'image',
       filename: 'test/assets/images/javascript.png'
-    }], function(object){
+    }], function(object) {
       console.info('Count: '+loadAssets.count, object);
-      // This is already cached
-      document.body.insertAdjacentHTML('beforeend', '<img src="test/assets/images/javascript.png">')
+      // This is already cached by the browser
+      document.querySelector('.javascript')
+              .insertAdjacentHTML('beforeend', '<img src="test/assets/images/javascript.png">')
+
+      document.querySelector('.advance--img')
+              .insertAdjacentHTML('beforeend', '<img src="test/assets/images/advance.svg">')
     });
   </script>
 </head>
 <body onload="loadAssets.startLoad()">
+  <div class="title"></div>
+  <div class="advance"></div>
+  <div class="advance--img"></div>
+  <div class="javascript"></div>
 </body>
 </html>

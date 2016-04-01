@@ -13,9 +13,8 @@ module.exports = function(grunt) {
       dev: {
         bsFiles: {
           src : [
-            '<%= dirs.test %>/assets/css/*.css',
-            '<%= dirs.test %>/assets/js/*.js',
-            '<%= dirs.test %>/src/js/*.js',
+            '**/*.css',
+            '**/*.js',
             '*.html'
           ]
         },
@@ -53,18 +52,11 @@ module.exports = function(grunt) {
 
     // Configures the watch task
     watch: {
-      html: {
-        files: ['**.**.html']
-      },
-      css: {
-        files: ['<%= dirs.test %>/assets/css/**/**.css']
-      },
-      javascript: {
-        files: ['src/js/**/**.js'],
-        tasks: ['uglify']
-      },
-      gruntfile: {
-        files: ['Gruntfile.js'],
+      all: {
+        files: ['**.html',
+                '<%= dirs.test %>/assets/css/**/**.css',
+                'src/js/**/**.js',
+                'Gruntfile.js'],
         tasks: ['build']
       }
     }
