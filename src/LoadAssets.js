@@ -25,8 +25,8 @@ module.exports = function(listAssets, callbackLoad, assetsRoot){
     var ajax = new XMLHttpRequest();
     ajax.open('GET', url, async);
     ajax.onload = function(){
-      if(typeof callback == "function") callback(ajax.response);
-      if(typeof errorCallback == "function") errorCallback(ajax.response);
+      if(typeof callback == "function") callback(ajax.responseText);
+      if(typeof errorCallback == "function") errorCallback(ajax.responseText);
     };
     ajax.send();
   };
