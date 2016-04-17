@@ -213,7 +213,7 @@ module.exports = function(listAssets, callbackLoad, assetsRoot) {
       }
     }
 
-  }
+  };
 
   /**
    * Loads and inserts the contents of a style in the DOM
