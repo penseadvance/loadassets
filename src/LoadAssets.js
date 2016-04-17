@@ -4,7 +4,7 @@
  * @param {function}  callbackLoad  Callback for each asset loaded
  * @param {string}    assetsRoot    Relative or absolute path from the root of assets
  */
-module.exports = function(listAssets, callbackLoad, assetsRoot){
+module.exports = function(listAssets, callbackLoad, assetsRoot) {
 
   var self = this;
   var baseUrl = (assetsRoot !== undefined ? assetsRoot+'/' : assetsRoot) || '';
@@ -20,7 +20,7 @@ module.exports = function(listAssets, callbackLoad, assetsRoot){
    * @param  {function}  errorCallback  A function to be called if the request fails.
    * @param  {boolean}   async          Parameter that defines whether the request is synchronous or asynchronous
    */
-  self.get = function(url, callback, errorCallback, async){
+  self.get = function(url, callback, errorCallback, async) {
     async = (typeof async == "boolean" ? async : true);
     var ajax = new XMLHttpRequest();
     ajax.open('GET', url, async);
@@ -35,7 +35,7 @@ module.exports = function(listAssets, callbackLoad, assetsRoot){
    * Checks whether the object has the necessary properties to be used
    * @param  {Object}  obj  The object that is loaded
    */
-  self.validateObject = function(obj){
+  self.validateObject = function(obj) {
     return (typeof obj === "object" && Object.keys(obj).indexOf('type') !== -1 && Object.keys(obj).indexOf('filename') !== -1 ? true : false);
   };
 
@@ -44,9 +44,9 @@ module.exports = function(listAssets, callbackLoad, assetsRoot){
    * @param  {Object[]}  allElements  Loaded elements
    * @param  {function}  callback     A callback function that is executed if the process succeeds.
    */
-  var injectElements = function(allElements, callback){
-    for(var el in allElements){
-      if(allElements[el].type == 'js' || allElements[el].type == 'style'){
+  var injectElements = function(allElements, callback) {
+    for(var el in allElements) {
+      if(allElements[el].type == 'js' || allElements[el].type == 'style') {
         document.querySelector('head').appendChild(allElements[el].element);
       }
     }
@@ -57,14 +57,14 @@ module.exports = function(listAssets, callbackLoad, assetsRoot){
    * Sorts the elements loaded
    * @param  {object}  object  Loaded elements
    */
-  var putInOrder = function(object, callback){
-    if(typeof object.order !== 'undefined' && typeof object.order == 'number'){
+  var putInOrder = function(object, callback) {
+    if(typeof object.order !== 'undefined' && typeof object.order == 'number') {
       orderedList.push(object);
-    }else {
+    } else {
       unorderedList.push(object);
     }
-    if(orderedList.concat(unorderedList).length == listAssets.length){
-      orderedList.sort(function(a, b){
+    if(orderedList.concat(unorderedList).length == listAssets.length) {
+      orderedList.sort(function(a, b) {
         return a.order - b.order;
       });
       if(typeof callback === 'function') callback(orderedList.concat(unorderedList));
@@ -113,8 +113,8 @@ module.exports = function(listAssets, callbackLoad, assetsRoot){
 
             case 'style':
               self.loadCss(currentItem, function(object) {
-                putInOrder(object, function(allElements){
-                  injectElements(allElements, function(object){
+                putInOrder(object, function(allElements) {
+                  injectElements(allElements, function(object) {
                     if(typeof callbackLoad == 'function') callbackLoad(object);
                   });
                 });
@@ -135,8 +135,8 @@ module.exports = function(listAssets, callbackLoad, assetsRoot){
    * @param  {object}    object    Object configured for asset loading
    * @param  {function}  callback  A callback function that is executed if the request succeeds
    */
-  self.loadScript = function(object, callback){
-    self.get(baseUrl+object.filename, function(content){
+  self.loadScript = function(object, callback) {
+    self.get(baseUrl+object.filename, function(content) {
       var newScript = document.createElement('script');
       newScript.type = 'text/javascript';
       newScript.innerHTML = content;
@@ -152,9 +152,9 @@ module.exports = function(listAssets, callbackLoad, assetsRoot){
    * @param  {object}    object    Object configured for asset loading
    * @param  {function}  callback  A callback function that is executed if the request succeeds
    */
-  self.loadImage = function(object, callback){
+  self.loadImage = function(object, callback) {
     var newImage = new Image();
-    newImage.onload = function(){
+    newImage.onload = function() {
       object.element = newImage;
 
       self.count++;
@@ -169,7 +169,7 @@ module.exports = function(listAssets, callbackLoad, assetsRoot){
   self.isSvgAble = function() {
     var div = document.createElement('div');
      div.innerHTML = '<svg/>';
-    if((typeof SVGRect != 'undefined' && div.firstChild && div.firstChild.namespaceURI) == 'http://www.w3.org/2000/svg') {
+    if((typeof SVGRect != 'undefined' && div.firstChild && div.firstChild.namespaceURI) == 'http://www.w3.org/2000/svg') { // Thanks Modernizr
       return true;
     } else {
       return false;
@@ -201,8 +201,7 @@ module.exports = function(listAssets, callbackLoad, assetsRoot){
         self.loadImage({
           type: 'image',
           filename: baseUrl + object.filename + '.png'
-        }, function(){
-          console.log('dfjhdsfh')
+        }, function() {
           var i = 0;
           while(i < target.length) {
             target[i].insertAdjacentHTML('beforeend', '<img src="'+ baseUrl + object.filename + '.png">');
